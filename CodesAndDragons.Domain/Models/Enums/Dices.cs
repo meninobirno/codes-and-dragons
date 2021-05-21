@@ -1,4 +1,4 @@
-﻿namespace CodesAndDragons.Models.Enums
+﻿namespace CodesAndDragons.Domain.Models.Enums
 {
     public enum Dices
     {

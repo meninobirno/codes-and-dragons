@@ -1,3 +1,4 @@
+using CodesAndDragons.Configurations;
 using CodesAndDragons.Infra.CrossCutting.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +40,8 @@ namespace CodesAndDragons
                     Contact = new OpenApiContact { Name = "Vinícios Schubert", Email = "vinicioschubert@hotmail.com"}
                 });
             });
+
+            services.AddAutoMapperSetup();
 
             RegisterServices(services, Configuration);
         }

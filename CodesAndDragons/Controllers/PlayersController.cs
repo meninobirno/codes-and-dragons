@@ -1,44 +1,67 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using CodesAndDragons.Application.RequestModel;
+using CodesAndDragons.Domain.Interfaces;
+using CodesAndDragons.Domain.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Threading.Tasks;
 
 namespace CodesAndDragons.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/player")]
     [ApiController]
     public class PlayersController : ControllerBase
     {
-        // GET: api/<PlayersController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IMapper _mapper;
+        private readonly ICacheRepository _repository;
+
+        public PlayersController(IMapper mapper, ICacheRepository repository)
         {
-            return new string[] { "value1", "value2" };
+            _mapper = mapper;
+            _repository = repository;
         }
 
-        // GET api/<PlayersController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet, Route("get-all-players")]
+        public async Task<string> Get()
         {
-            return "value";
+            List<Player> players = await _repository.GetCacheList();
+
+            if (players.Count > 0)
+                return players.Count.ToString();
+            else
+                return "Sem personagens cadastrados";
         }
 
-        // POST api/<PlayersController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet, Route("get-player-by-id/{id}")]
+        public async Task<string> Get(int id)
         {
+            List<Player> players = await _repository.GetCacheList();
+
+            if (players.Count > 0)
+            {
+                Player searchedPlayer = players.Find(x => x.Id == id);
+
+                if (searchedPlayer != null)
+                    return searchedPlayer.ToString();
+                else
+                    return "Jogador não encontrado!";
+            }
+            else
+                return "A lista está vazia!";
+
         }
 
-        // PUT api/<PlayersController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost, Route("add-new-player")]
+        public async Task<IActionResult> Post([FromBody] PlayerRequest data)
         {
-        }
+            Player player = _mapper.Map<Player>(data);
 
-        // DELETE api/<PlayersController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var response = await _repository.AddNewPlayer(player);
+
+            if (response)
+                return Accepted();
+            else
+                return BadRequest();
         }
     }
 }

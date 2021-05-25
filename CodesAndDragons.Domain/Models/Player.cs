@@ -15,5 +15,20 @@ namespace CodesAndDragons.Domain.Models
         public int ArmorClass { get; set; }
         public string PlayerAttributtes { get; set; }
         #endregion
+
+        #region Métodos
+        public override string ToString()
+        {
+            return $@"Id: {Id},
+                      PlayerName: {PlayerName},
+                      CharName: {CharName},
+                      CharRace: {CharRace},
+                      CharClass: {CharClass},
+                      CharDescription: {CharDescription},
+                      LifePoints: {LifePoints},
+                      ArmorClass: {ArmorClass},
+                      PlayerAttributes: {PlayerAttributtes}";
+        }
+        #endregion
     }
 }

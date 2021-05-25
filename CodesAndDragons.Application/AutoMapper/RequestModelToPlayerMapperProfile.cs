@@ -41,7 +41,7 @@ namespace CodesAndDragons.Application.AutoMapper
                         break;
 
                     case "racapersonagem":
-                        ret.CharRace = (Race)item.Value;
+                        ret.CharRace = (Race)int.Parse(item.Value.ToString());
                         break;
 
                     case "vida":
@@ -51,6 +51,11 @@ namespace CodesAndDragons.Application.AutoMapper
                     case "classearmadura":
                         ret.ArmorClass = int.Parse(item.Value.ToString());
                         break;
+
+                    case "id":
+                        ret.Id = int.Parse(item.Value.ToString());
+                        break;
+
                 }
             }
             return ret;

@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CodesAndDragons.Domain.Interfaces;
+using CodesAndDragons.Infra.Data.Repository;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-
+using System.Runtime.Caching;
 
 namespace CodesAndDragons.Infra.CrossCutting.IoC
 {
@@ -10,6 +12,11 @@ namespace CodesAndDragons.Infra.CrossCutting.IoC
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<Random>();
+
+            //Repositories
+            services.AddScoped<ICacheRepository, CacheRepository>();
+            services.AddScoped<IDiceRepository, DiceRepository>();
+
         }
     }
 }
